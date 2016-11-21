@@ -1,17 +1,16 @@
 /* lexical grammar */
+%{
+    var parseTree = require('./utils.js');
+%}
 
 %lex
 %%
 
 \s+         	{/* skip whitespace */}
-[0-9]+					{	if(yylloc.first_line==1 && yylloc.first_column==0){
-								parser = require('./utils.js');
-							}
-							return 'NUMBER';
-						}
+[0-9]+			return 'NUMBER';
 "+"						return '+';
 "*"           return '*';
-<<EOF>>               return 'EOF';
+<<EOF>>       return 'EOF';
 
 /lex
 
@@ -20,12 +19,12 @@
 expressions
     : E EOF
         {
-        	parser.parse();
+        	parseTree.parse();
   		}
     ;
 
-E : E '+' T {$$=parser.add($1,$2,$3);}
-  | E '*' T {$$=parser.add($1,$2,$3);}
+E : E '+' T {$$=parseTree.add($1,$2,$3);}
+  | E '*' T {$$=parseTree.add($1,$2,$3);}
   | T
   ;
 
