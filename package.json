@@ -1,0 +1,22 @@
+{
+  "name": "jison",
+  "version": "1.0.0",
+  "description": "downloaded dependency of mocha test",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/piolAtif/Learning_jison.git"
+  },
+  "author": "Preeti Sharma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/piolAtif/Learning_jison/issues"
+  },
+  "homepage": "https://github.com/piolAtif/Learning_jison#readme"
+}
