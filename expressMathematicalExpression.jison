@@ -1,6 +1,6 @@
 /* lexical grammar */
 %{
-    var parseTree = require('./utils.js');
+    var parseTree = require('/Users/preetisharma/Dropbox/learning_language/jison/Learning_jison/utils.js');
 %}
 
 %lex
@@ -8,7 +8,7 @@
 
 \s+         	{/* skip whitespace */}
 [0-9]+			return 'NUMBER';
-"+"						return '+';
+"+"				return '+';
 "*"           return '*';
 <<EOF>>       return 'EOF';
 
@@ -19,7 +19,7 @@
 expressions
     : E EOF
         {
-        	parseTree.parse();
+        	parseTree.parse($1);
   		}
     ;
 
