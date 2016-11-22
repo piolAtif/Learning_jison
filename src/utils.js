@@ -6,8 +6,21 @@ var identity = function(number){
 	return number;
 }
 
+
+utils.createPlusNode = function(plus){
+	return {name:plus, evaluation: function(first,second){return first+second;}}
+}
+
+utils.createMultiplyNode = function(multiply){
+	return {name:multiply,evaluation:function(first,second){return first*second;}}
+}
+
+utils.createNumberNode = function(number){
+	return {name:number, evaluation: function(){return +number;}};
+}
+
 utils.add = function(leftChild,node,rightChild){
-	return [leftChild,node,rightChild];
+	return {"left":leftChild,"node":node,"right":rightChild};
 }
 
 var operations = {
@@ -15,26 +28,23 @@ var operations = {
 	"*" : "times"
 }
 
-var operatorToWord = function(operator){
-	return operations[operator];
+var convertToWord = function(elements){
+	return converter.toWords(elements[0])+' '+operations[elements[1]]+' '+converter.toWords(elements[2]);
 }
 
-var represent = function(list,delimiters,ConvertFunc,operatorFunc){
-	var data = JSON.parse(JSON.stringify(list));
-	data[1] = operatorFunc(data[1]);
-	data[2] = ConvertFunc(data[2]);
-	if(!(data[0] instanceof Array)){
-		data[0] = ConvertFunc(+data[0]);
-	}
-	else{
-		data[0] = represent(data[0],delimiters,ConvertFunc,operatorFunc);
-	}
-	return delimiters[0]+data.join(' ')+delimiters[1];
+
+var replaceWithParenthesis = function(setOfElement){
+	return setOfElement.toString();
+}
+
+var represent = function(list,convertFunc){
+	return list;
 }
 
 utils.parse = function(list){
-	console.log(represent(list,["( " , " )"],identity,identity));
-	console.log(represent(list,["( " , " )"],converter.toWords,operatorToWord));
+	console.log(list);
+	return {id:represent(list,replaceWithParenthesis),
+		words:represent(list,convertToWord)};
 }
 
 module.exports = utils;
