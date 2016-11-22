@@ -20,19 +20,23 @@ expressions
     : E EOF
         {
         	var result = parseTree.parse($1);
-        	console.log(result.id)
+        	console.log(result.id);
         	console.log(result.words);
   		}
     ;
 
-E : E plus T {$$=parseTree.add($1,$2,$3);}
-  | E multi T {$$=parseTree.add($1,$2,$3);}
+E : E arithmetic_operator T {$$=[$1,$2,$3];}
   | T
   ;
 
-
+minus : '-' {$$ = parseTree.creatMinusNode(yytext);};
 multi : '*' {$$ = parseTree.createMutiplyNode(yytext);};
-
 plus : '+' {$$ = parseTree.createPlusNode(yytext);};
+
+arithmetic_operator
+    : plus
+    | multi
+    | minus
+    ;
 
 T :NUMBER($$) {$$ = parseTree.createNumberNode(yytext);};
