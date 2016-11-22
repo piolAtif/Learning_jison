@@ -1,6 +1,6 @@
 /* lexical grammar */
 %{
-    var parseTree = require('/Users/preetisharma/Dropbox/learning_language/jison/Learning_jison/utils.js');
+    var parseTree = require('./utils.js');
 %}
 
 %lex
@@ -19,14 +19,20 @@
 expressions
     : E EOF
         {
-        	parseTree.parse($1);
+        	var result = parseTree.parse($1);
+        	console.log(result.id)
+        	console.log(result.words);
   		}
     ;
 
-E : E '+' T {$$=parseTree.add($1,$2,$3);}
-  | E '*' T {$$=parseTree.add($1,$2,$3);}
+E : E plus T {$$=parseTree.add($1,$2,$3);}
+  | E multi T {$$=parseTree.add($1,$2,$3);}
   | T
   ;
 
-T :NUMBER($$);
 
+multi : '*' {$$ = parseTree.createMutiplyNode(yytext);};
+
+plus : '+' {$$ = parseTree.createPlusNode(yytext);};
+
+T :NUMBER($$) {$$ = parseTree.createNumberNode(yytext);};
