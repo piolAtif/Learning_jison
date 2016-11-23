@@ -1,6 +1,6 @@
 /* lexical grammar */
 %{
-    var parseTree = require('./utils.js');
+    var parseTree = require('/Users/preetisharma/Dropbox/learning_language/jison/Learning_jison/src/utils.js');
 %}
 
 %lex
