@@ -9,12 +9,14 @@ describe('Create single tree node', function() {
 
     it('should return sum of two numbers when node is plus', function() {
         var plusNode = utils.createPlusNode('+');
-        assert.equal(3, plusNode.evaluation(1, 2));
+        plusNode.setValues(1,2);
+        assert.equal(3, plusNode.evaluation());
     })
 
     it('should return multiplication of two numbers when node is a multiply', function() {
         var multiplyNode = utils.createMultiplyNode('*');
-        assert.equal(6, multiplyNode.evaluation(3, 2));
+         multiplyNode.setValues(3,2);
+        assert.equal(6, multiplyNode.evaluation());
     })
 })
 
@@ -51,7 +53,7 @@ describe('Evaluate expressions', function() {
             });
         });
 
-    })
+    });
     describe('Evaluate expression in words', function() {
         describe('should express string in word when given expression is a single array', function() {
             it('should give word expression for sum of two numbers', function() {
@@ -75,8 +77,18 @@ describe('Evaluate expressions', function() {
                 ];
                 var expectedResult = '( ( one plus two ) times three )';
                 assert.equal(utils.parse(tree).words, expectedResult);
-            })
+            });
+        });
+    });
+    describe('Evaluate expression when expressions are in multiple statement',function(){
+        it('should return 25 after evaluating the expression',function(){
+            var variableNode = utils.createVariableNode('x');
+            var assignNode = utils.createAssignNode('=');
+            var firstNumberNode = utils.createNumberNode(10);
+            var secondNumberNode = utils.createNumberNode(5);
+            var thirdNumberNode = utils.createNumberNode(2);
+            var tree = [[[variableNode, assignNode, firstNumberNode],plusNode,secondNumberNode],multiplyNode,thirdNumberNode];
+            assert.equal(25, utils.parse(tree).eval);
         })
-
     })
-})
+});
