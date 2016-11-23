@@ -52,7 +52,7 @@ describe('Evaluate expressions', function() {
         });
 
     })
-    describe('Evaluate expressions in words', function() {
+    describe('Evaluate expression in words', function() {
         describe('should express string in word when given expression is a single array', function() {
             it('should give word expression for sum of two numbers', function() {
                 var tree = [firstNumberNode, plusNode, secondNumberNode];
