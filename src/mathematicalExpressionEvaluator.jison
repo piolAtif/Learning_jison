@@ -9,32 +9,54 @@
 \s+         	{/* skip whitespace */}
 [0-9]+			return 'NUMBER';
 "+"				return '+';
+"-"       return '-';
 "*"           return '*';
 <<EOF>>       return 'EOF';
 
 /lex
 
-%%
+%left '+' '-'
+%left '*'
 
+%start expressions
+
+%%
 expressions
-    : E EOF
+    : e EOF
         {
         	return utils.parse($1);
   		}
     ;
-
-E : E arithmetic_operator T {$2.setValues($1,$3);$$=[$1,$2,$3];}
-  | T
-  ;
-
-minus : '-' {$$ = utils.createMinusNode(yytext);};
-multi : '*' {$$ = utils.createMultiplyNode(yytext);};
-plus : '+' {$$ = utils.createPlusNode(yytext);};
-
+    
+e
+   : e '+' e
+      {
+        var node = utils.createPlusNode($2);
+        node.setValues($1, $3);
+        $$ = [$1, node, $3];
+      }
+    | e '*' e
+      {
+        var node = utils.createMultiplyNode($2);
+        node.setValues($1, $3);
+        $$ = [$1, node, $3];
+      }
+    | e '-' e
+      {
+        var node = utils.createMinusNode($2);
+        node.setValues($1, $3);
+        $$ = [$1, node, $3];
+      }
+    | NUMBER
+      {$$ = utils.createNumberNode(Number(yytext))}  
+    ;
 arithmetic_operator
-    : plus
-    | multi
-    | minus
+    : '+'
+      {$$ = utils.createMinusNode(yytext);}
+    | '*'
+      {$$ = utils.createMultiplyNode(yytext);}
+    | '-'
+      {$$ = utils.createMinusNode(yytext);}
     ;
 
 T :NUMBER($$) {$$ = utils.createNumberNode(Number(yytext));};
