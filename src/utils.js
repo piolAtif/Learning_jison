@@ -8,13 +8,11 @@ var identity = function(number){
 }
 
 utils.createVariableNode = function(variable){
-	return {name:variable, evaluation:function(){return variable;}};
+	return {name:variable, evaluation:function(){return this.value;}, value:undefined};
 }
 
 utils.createAssignNode = function(assign){
-	var first = 0;
-	var second = 0;
-	return {name:assign,setValues:function(firstArg, secondArg){first = firstArg; second = secondArg;}, evaluation: function(){return first = second;}}
+	return new nodes.OperatorNode(assign, function(){return this.firstValue.value = this.secondValue;});
 }
 
 utils.createPlusNode = function(plus){
@@ -35,7 +33,8 @@ utils.createMinusNode = function(minus) {
 
 var operations = {
 	"+" : "plus",
-	"*" : "times"
+	"*" : "times",
+	"-"	: "minus"
 }
 
 var operatorToWord = function(operator){
@@ -51,11 +50,11 @@ var withParenthesis = function(list){
 		return initial
 	}, []);
 	return '( ' + expression.join(' ') + ' )';
-}
+};
+
 var flattenToWord = function(element){
-	if(element instanceof Array){
+	if(element instanceof Array)
 		return toWords(element)
-	}
 	else 
 		return converter.toWords(element.name);
 }
