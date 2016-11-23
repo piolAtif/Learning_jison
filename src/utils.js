@@ -26,7 +26,7 @@ utils.createMultiplyNode = function(multiply){
 }
 
 utils.createNumberNode = function(number){
-	return {name:number, evaluation: function(){return +number;}};
+	return {name:number, evaluation: function(){return number;}};
 }
 
 utils.createMinusNode = function(minus) {
@@ -52,10 +52,21 @@ var withParenthesis = function(list){
 	}, []);
 	return '( ' + expression.join(' ') + ' )';
 }
+var flattenToWord = function(element){
+	if(element instanceof Array){
+		return toWords(element)
+	}
+	else 
+		return converter.toWords(element.name);
+}
 
 var toWords = function(list) {
+	var left = flattenToWord(list[0]);
+	var right = flattenToWord(list[2])
+	var operator = operatorToWord(list[1].name);
+	return '( ' + [left, operator, right].join(' ') + ' )';
+};
 
-}
 var evaluateExpression = function(list){
 	// console.log(list);
 }
