@@ -8,7 +8,7 @@ var identity = function(number){
 }
 
 utils.createVariableNode = function(variable){
-	return {name:variable, evaluation:function(){return this.value;}, value:undefined};
+	return {sign:variable, evaluation:function(){return this.value;}, value:undefined};
 }
 
 utils.createAssignNode = function(assign){
@@ -24,7 +24,7 @@ utils.createMultiplyNode = function(multiply){
 }
 
 utils.createNumberNode = function(number){
-	return {name:number, evaluation: function(){return number;}};
+	return {sign:number, evaluation: function(){return number;}};
 }
 
 utils.createMinusNode = function(minus) {
@@ -46,7 +46,7 @@ var withParenthesis = function(list){
 		if (ele instanceof Array)
 			 initial.push(withParenthesis(ele)) ;
 		else 
-			initial.push(ele.name);
+			initial.push(ele.sign);
 		return initial
 	}, []);
 	return '( ' + expression.join(' ') + ' )';
@@ -56,18 +56,19 @@ var flattenToWord = function(element){
 	if(element instanceof Array)
 		return toWords(element)
 	else 
-		return converter.toWords(element.name);
+		return converter.toWords(element.sign);
 }
 
 var toWords = function(list) {
 	var left = flattenToWord(list[0]);
 	var right = flattenToWord(list[2])
-	var operator = operatorToWord(list[1].name);
+	var operator = operatorToWord(list[1].sign);
 	return '( ' + [left, operator, right].join(' ') + ' )';
 };
 
 var evaluateExpression = function(list){
 	// console.log(list);
+
 }
 
 utils.parse = function(list){

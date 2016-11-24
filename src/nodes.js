@@ -5,7 +5,6 @@ nodes.OperatorNode = function(sign, evatuator) {
 	this.evatuator = evatuator;
 	this.firstValue = undefined;
 	this.secondValue = undefined;
-	this.name = sign;
 }
 
 nodes.OperatorNode.prototype = {
