@@ -1,17 +1,23 @@
-var Tree = function(list) {
-	this.nodes = list;
+var Tree = function() {
+	this.nodes = [];
+	this.varTable = {'_': undefined};
 };
 
 Tree.prototype = {
 	withParenthesis: function() {
-	    var expression = this.nodes.reduce(function(initial, ele) {
-	        if (ele instanceof Array)
-	            initial.push(withParenthesis(ele));
-	        else
-	            initial.push(ele.name);
-	        return initial
-		}, []);
-    	return '( ' + expression.join(' ') + ' )';
+	   return this.nodes[0].withParenthesis();
+	},
+	add: function(node) {
+		this.nodes.push(node);
+	},
+	toWords: function() {
+		return this.nodes[0].toWords();	
+	},
+	evaluate: function(){
+		for (var i = 0; i < this.nodes.length; i++) {
+			this.varTable = this.nodes[i].evaluate(this.varTable);
+		}
+		return this.varTable['_']
 	}
 
 }
