@@ -1,6 +1,8 @@
 /* lexical grammar */
 %{
-    var utils = require('/Users/preetisharma/Dropbox/learning_language/jison/Learning_jison/src/utils.js');
+    var path = require('path');
+    var utils = require(path.resolve('./src/utils.js'));
+    var Tree = require(path.resolve('./src/tree.js'));
 %}
 
 %lex
@@ -13,13 +15,14 @@
 "-"           return '-';
 '='           return '=';
 "*"           return '*';
+"^"           return '^';
 ';'           return 'EOL';
 <<EOF>>       return 'EOF';
 
 /lex
 
 %left '+' '-','='
-%left '*'
+%left '*','^'
 
 %start expressions
 
@@ -33,19 +36,16 @@ expressions
 
 
 e
-  :arithmetic EOL
-  |assignmentExpression
-  |assignmentExpression e
-    {$$.push($2)}
+  :e arithmetic EOL
+      {$1.add($2)}
+  |e assignmentExpression 
+    {$1.add($2)}
+  | {$$ = new Tree()}   
   ;
 
 assignmentExpression
   : variable_value '=' arithmetic EOL
-      {
-        var node = utils.createAssignNode($2);
-        node.setValues($1,$3);
-        $$ = [node];
-      }
+      { $$ = utils.createAssignNode($1, $2, $3);}
   ;
 
 variable_value
@@ -63,6 +63,10 @@ arithmetic
     | arithmetic '-' arithmetic
       {
         $$ = utils.createMinusNode($1, $2, $3);
+      }
+    | | arithmetic '^' arithmetic
+      {
+        $$ = utils.createPowNode($1, $2, $3);
       }
     
     | NUMBER
