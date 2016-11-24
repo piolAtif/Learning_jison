@@ -25,37 +25,48 @@
 
 %%
 expressions
-    : e EOF
+    : e STATEMENTEND EOF
         {
         	return utils.parse($1);
   		}
     ;
 
+
 e
-   : e '+' e 
-      {
-        var node = utils.createPlusNode($2);
-        node.setValues($1, $3);
-        $$ = [$1, node, $3];
-      }
-    | e '*' e 
-      {
-        var node = utils.createMultiplyNode($2);
-        node.setValues($1, $3);
-        $$ = [$1, node, $3];
-      }
-    | e '-' e
-      {
-        var node = utils.createMinusNode($2);
-        node.setValues($1, $3);
-        $$ = [$1, node, $3];
-      }
-    | e '=' e STATEMENTEND
+  :arithmetic
+  |assignmentExpression
+  ;
+
+assignmentExpression
+  : VARIABLE '=' arithmetic
       {
         var node = utils.createAssignNode($2);
         node.setValues($1, $3);
         $$ = [$1, node, $3];
       }
+  ;
+
+
+arithmetic
+   : arithmetic '+' arithmetic
+      {
+        var node = utils.createPlusNode($2);
+        node.setValues($1, $3);
+        $$ = [$1, node, $3];
+      }
+    | arithmetic '*' arithmetic
+      {
+        var node = utils.createMultiplyNode($2);
+        node.setValues($1, $3);
+        $$ = [$1, node, $3];
+      }
+    | arithmetic '-' arithmetic
+      {
+        var node = utils.createMinusNode($2);
+        node.setValues($1, $3);
+        $$ = [$1, node, $3];
+      }
+    
     | NUMBER
       {$$ = utils.createNumberNode(Number(yytext))} 
 
