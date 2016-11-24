@@ -8,55 +8,63 @@ var identity = function(number){
 }
 
 utils.createVariableNode = function(variable){
-	return {sign:variable, evaluation:function(){return this.value;}, value:undefined};
+	return {sign:variable, evaluate:function(){return this.sign;}};
 }
 
 utils.createAssignNode = function(left, assign, right){
 	return new nodes.OperatorNode(left, assign, right,
-						function(){return this.firstValue.value = this.secondValue.evaluation();});
+						function(table){
+							table[this.left.evaluate()] = valueOf(table,this.right);
+							return table;
+						});
 }
 
 utils.createPlusNode = function(left, plus, right){
 	return new nodes.OperatorNode(left, plus, right,
-			 function(){return this.firstValue + this.secondValue;});
+			 function(table){
+			 	table['_'] = valueOf(table,this.left) + valueOf(table,this.right);
+			 	return table;
+			 });
 }
 
 utils.createMultiplyNode = function(left, multiply, right){
 	return new nodes.OperatorNode(left, multiply, right,
-						 function(){return this.first * this.second;});
+						 function(table){
+						 	table['_'] = valueOf(table, this.left) * valueOf(table, this.right);
+						 	return table;
+						 });
 }
 
 utils.createNumberNode = function(number){
-	return {sign:number, evaluation: function(){return number;}};
+	return {sign:number, evaluate: function(table){ table['_'] = number; return table}};
 }
 
 utils.createMinusNode = function(left, minus, right) {
 	return new nodes.OperatorNode(left, minus, right,
-					 function(){return this.first - this.second;});
+					function(table){
+						 	table['_'] = valueOf(table, this.left) - valueOf(table, this.right);
+						 	return table;
+						 });
+}
+
+utils.createPowNode = function(left, pow, right) {
+	return new nodes.OperatorNode(left, pow, right,
+					function(table){
+						 	table['_'] = Math.pow(valueOf(table, this.left),valueOf(table, this.right));
+						 	return table;
+						 });
 }
 
 
-
-var operatorToWord = function(operator){
-	return operations[operator];
+var valueOf = function(table, node){
+	if(table.hasOwnProperty(node.sign) ) {
+		return table[node.sign]
+	}
+	else{
+		return node.evaluate(table)['_'];
+	}
 }
 
-var withParenthesis = function(list){
-	var expression = list.reduce(function(initial, ele) {
-		if (ele instanceof Array)
-			 initial.push(withParenthesis(ele)) ;
-		else 
-			initial.push(ele.sign);
-		return initial
-	}, []);
-	return '( ' + expression.join(' ') + ' )';
-};
-
-
-var evaluateExpression = function(list){
- 	// return a.evaluation();
-
-}
 
 utils.parse = function(list){
 	return list;
