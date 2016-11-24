@@ -13,7 +13,7 @@
 "-"           return '-';
 '='           return '=';
 "*"           return '*';
-';'           return 'STATEMENTEND';
+';'           return 'EOL';
 <<EOF>>       return 'EOF';
 
 /lex
@@ -25,7 +25,7 @@
 
 %%
 expressions
-    : e STATEMENTEND EOF
+    : e EOF
         {
         	return utils.parse($1);
   		}
@@ -33,43 +33,40 @@ expressions
 
 
 e
-  :arithmetic
+  :arithmetic EOL
   |assignmentExpression
+  |assignmentExpression e
+    {$$.push($2)}
   ;
 
 assignmentExpression
-  : VARIABLE '=' arithmetic
+  : variable_value '=' arithmetic EOL
       {
         var node = utils.createAssignNode($2);
-        node.setValues($1, $3);
-        $$ = [$1, node, $3];
+        node.setValues($1,$3);
+        $$ = [node];
       }
   ;
 
+variable_value
+  : VARIABLE {$$ = utils.createVariableNode(yytext)};
 
 arithmetic
    : arithmetic '+' arithmetic
       {
-        var node = utils.createPlusNode($2);
-        node.setValues($1, $3);
-        $$ = [$1, node, $3];
+        $$ = utils.createPlusNode($1, $2, $3);
       }
     | arithmetic '*' arithmetic
       {
-        var node = utils.createMultiplyNode($2);
-        node.setValues($1, $3);
-        $$ = [$1, node, $3];
+        $$ = utils.createMultiplyNode($1, $2, $3);
       }
     | arithmetic '-' arithmetic
       {
-        var node = utils.createMinusNode($2);
-        node.setValues($1, $3);
-        $$ = [$1, node, $3];
+        $$ = utils.createMinusNode($1, $2, $3);
       }
     
     | NUMBER
       {$$ = utils.createNumberNode(Number(yytext))} 
 
-    | VARIABLE
-      {$$ = utils.createVariableNode(yytext)} 
+    | variable_value
     ;

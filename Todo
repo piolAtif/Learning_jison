@@ -1,0 +1,23 @@
+remove name
+seperate asisign in grammar
+seperate utils test in caculator , parenthesis [according to assignment]
+make creat node seperate
+
+
+
+
+// removed name = completed hurray!!!!
+
+// evaluator return string  - expectation call passing function
+// parse return object = because x is a string not a number , first id and words expecting number .
+//not using representation in nodes 
+
+
+
+
+
+
+
+
+//follow the encapsulation process [don't access field value direct ex - nodes sign ]
+// remove unneccessary arguments [$1 $3 already consisted in $2]

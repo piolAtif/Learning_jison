@@ -11,31 +11,31 @@ utils.createVariableNode = function(variable){
 	return {sign:variable, evaluation:function(){return this.value;}, value:undefined};
 }
 
-utils.createAssignNode = function(assign){
-	return new nodes.OperatorNode(assign, function(){return this.firstValue.value = this.secondValue;});
+utils.createAssignNode = function(left, assign, right){
+	return new nodes.OperatorNode(left, assign, right,
+						function(){return this.firstValue.value = this.secondValue.evaluation();});
 }
 
-utils.createPlusNode = function(plus){
-	return new nodes.OperatorNode(plus, function(){return this.firstValue + this.secondValue;});
+utils.createPlusNode = function(left, plus, right){
+	return new nodes.OperatorNode(left, plus, right,
+			 function(){return this.firstValue + this.secondValue;});
 }
 
-utils.createMultiplyNode = function(multiply){
-	return new nodes.OperatorNode(multiply, function(){return this.first * this.second;});
+utils.createMultiplyNode = function(left, multiply, right){
+	return new nodes.OperatorNode(left, multiply, right,
+						 function(){return this.first * this.second;});
 }
 
 utils.createNumberNode = function(number){
 	return {sign:number, evaluation: function(){return number;}};
 }
 
-utils.createMinusNode = function(minus) {
-	return new nodes.OperatorNode(minus, function(){return this.first - this.second;});
+utils.createMinusNode = function(left, minus, right) {
+	return new nodes.OperatorNode(left, minus, right,
+					 function(){return this.first - this.second;});
 }
 
-var operations = {
-	"+" : "plus",
-	"*" : "times",
-	"-"	: "minus"
-}
+
 
 var operatorToWord = function(operator){
 	return operations[operator];
@@ -52,30 +52,14 @@ var withParenthesis = function(list){
 	return '( ' + expression.join(' ') + ' )';
 };
 
-var flattenToWord = function(element){
-	if(element instanceof Array)
-		return toWords(element)
-	else 
-		return converter.toWords(element.sign);
-}
-
-var toWords = function(list) {
-	var left = flattenToWord(list[0]);
-	var right = flattenToWord(list[2])
-	var operator = operatorToWord(list[1].sign);
-	return '( ' + [left, operator, right].join(' ') + ' )';
-};
 
 var evaluateExpression = function(list){
-	// console.log(list);
+ 	// return a.evaluation();
 
 }
 
 utils.parse = function(list){
-	// return new Tree(list);
-	return {id:withParenthesis(list),
-		words:toWords(list),
-		eval:evaluateExpression(list)};
+	return list;
 }
 
 module.exports = utils;
