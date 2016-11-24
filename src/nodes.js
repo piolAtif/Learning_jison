@@ -29,10 +29,17 @@ nodes.OperatorNode.prototype = {
 		var left = funcs.flattenWithParenthesis(this.left);
 		var right = funcs.flattenWithParenthesis(this.right)
 		return '( ' + [left, this.sign, right].join(' ') + ' )';
+	},
+	evaluate: function(varTable) {
+		return this.evaluator(varTable);
+	},
+	signature: function() {
+		return this.sign;
 	}
 }
 
 module.exports = nodes;
+
 
 
 var funcs = {
