@@ -16,13 +16,14 @@
 '='           return '=';
 "*"           return '*';
 "^"           return '^';
+"!"           return '!';
 ';'           return 'EOL';
 <<EOF>>       return 'EOF';
 
 /lex
 
 %left '+' '-','='
-%left '*','^'
+%left '*','^','!'
 
 %start expressions
 
@@ -37,10 +38,10 @@ expressions
 
 e
   :e arithmetic EOL
-      {$1.add($2)}
+      {$1.add($2);}
   |e assignmentExpression 
     {$1.add($2)}
-  | {$$ = new Tree()}   
+  | {$$ = new Tree();}   
   ;
 
 assignmentExpression
@@ -64,10 +65,13 @@ arithmetic
       {
         $$ = utils.createMinusNode($1, $2, $3);
       }
-    | | arithmetic '^' arithmetic
+    | arithmetic '^' arithmetic
       {
         $$ = utils.createPowNode($1, $2, $3);
       }
+
+    | arithmetic '!'
+      {$$ = utils.createFactorialNode($1,$2)}
     
     | NUMBER
       {$$ = utils.createNumberNode(Number(yytext))} 
