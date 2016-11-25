@@ -111,14 +111,33 @@ describe('parseTree', function() {
 		it('should return 35 for given expression',function(){
 			var tree = parser.parse('x=10;y=x+20;y+5;');
 			assert.equal(35, tree.evaluate());
-		})
+		});
 
 		it('should return 32 for given complex expression',function(){
 			var tree = parser.parse('x=2;x=2^5;x;');
 			assert.equal(32,tree.evaluate());
-		})
+		});
 	});
 	
+	describe('to javascript code',function(){
+		it('should give equivalent js code for a simple number',function(){
+			var tree = parser.parse('10;');
+			var expected = 'console.log(10);'+'\n';
+			assert.equal(expected, tree.toJS());
+		});
+
+		it('should give equivalent js code for a simple variable assign expression',function(){
+			var tree = parser.parse('x=10;');
+			var expected = 'var x = 10;'+'\n';
+			assert.equal(expected, tree.toJS());
+		});
+
+		it('should give equivalent js code for a simple variable',function(){
+			var tree = parser.parse('x=10; x;');
+			var expected = 'var x = 10;'+'\n'+'console.log(x);'+'\n';
+			assert.equal(expected, tree.toJS());
+		});
+	});
 });
 
 
