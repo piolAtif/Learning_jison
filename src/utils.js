@@ -55,14 +55,26 @@ utils.createPowNode = function(left, pow, right) {
 						 });
 }
 
+utils.UndefinedVariableException = function(value){
+	this.value = value;
+	this.message = this.value+' is not defined';
+	this.toString = function(){
+		return this.value+this.message;
+	}
+}
 
 var valueOf = function(table, node){
+	var value = node.evaluate(table)['_'];
 	if(table.hasOwnProperty(node.sign) ) {
 		return table[node.sign]
 	}
-	else{
-		return node.evaluate(table)['_'];
+	else if(value){
+		return value;
 	}
+	else{
+		throw new utils.UndefinedVariableException(node.sign);
+	}
+
 }
 
 
