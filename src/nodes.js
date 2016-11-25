@@ -37,7 +37,10 @@ nodes.OperatorNode.prototype = {
 		return this.sign;
 	},
 	asString:function(){
-		return this.left.asString()+' '+this.signature()+' '+this.right.asString();
+		var stringRepresentation = this.left.asString()+' '+this.signature()+' '+this.right.asString();
+		if(this.type == 'assign')
+			return  stringRepresentation;
+		return '('+stringRepresentation+')';
 	},
 	getType: function() {
 		return this.type;
@@ -80,6 +83,19 @@ nodes.VariableNode.prototype = {
 		return this.type;
 	}
 
+}
+
+nodes.FactorialNode = function(value, sign, type, evaluator ){
+	this.sign = sign;
+	this.value = value;
+	this.type = type;
+	this.evaluator = evaluator;
+}
+
+nodes.FactorialNode.prototype = {
+	evaluate: function(varTable){
+		return this.evaluator(varTable);
+	}
 }
 
 
