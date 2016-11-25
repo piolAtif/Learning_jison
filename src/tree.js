@@ -3,6 +3,19 @@ var Tree = function() {
 	this.varTable = {'_': undefined};
 };
 
+var typeOperation = {
+	variable:function(value){
+		return 'console.log('+value+');';
+	},
+	number: function(value){
+		return 'console.log('+value+');';
+	},
+	assign: function(value){
+		return 'var '+value+';';
+	},
+
+}
+
 Tree.prototype = {
 	withParenthesis: function() {
 	   return this.nodes[0].withParenthesis();
@@ -17,6 +30,13 @@ Tree.prototype = {
 		for (var i = 0; i < this.nodes.length; i++) 
 			this.varTable = this.nodes[i].evaluate(this.varTable);
 		return this.varTable['_']
+	},
+	toJS: function(){
+	var jsCode = '';		
+		for (var i = 0; i < this.nodes.length; i++) {
+			 jsCode += typeOperation[this.nodes[i].getType()](this.nodes[i].asString())+'\n';
+		}
+		return jsCode;
 	}
 
 }

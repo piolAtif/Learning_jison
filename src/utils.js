@@ -9,11 +9,11 @@ var identity = function(number){
 }
 
 utils.createVariableNode = function(variable){
-	return {sign:variable, evaluate:function(table){return table;}};
+	return new nodes.VariableNode(variable,'variable');
 }
 
 utils.createAssignNode = function(left, assign, right){
-	return new nodes.OperatorNode(left, assign, right,
+	return new nodes.OperatorNode(left, assign, right,'assign',
 						function(table){
 							table[this.left.sign] = valueOf(table,this.right);
 							return table;
@@ -21,7 +21,7 @@ utils.createAssignNode = function(left, assign, right){
 }
 
 utils.createPlusNode = function(left, plus, right){
-	return new nodes.OperatorNode(left, plus, right,
+	return new nodes.OperatorNode(left, plus, right,'plus',
 			 function(table){
 			 	table['_'] = valueOf(table,this.left) + valueOf(table,this.right);
 			 	return table;
@@ -29,7 +29,7 @@ utils.createPlusNode = function(left, plus, right){
 }
 
 utils.createMultiplyNode = function(left, multiply, right){
-	return new nodes.OperatorNode(left, multiply, right,
+	return new nodes.OperatorNode(left, multiply, right,'times',
 						 function(table){
 						 	table['_'] = valueOf(table, this.left) * valueOf(table, this.right);
 						 	return table;
@@ -37,11 +37,11 @@ utils.createMultiplyNode = function(left, multiply, right){
 }
 
 utils.createNumberNode = function(number){
-	return {sign:number, evaluate: function(table){ table['_'] = number; return table}};
+	return new nodes.NumberNode(number,'number');
 }
 
 utils.createMinusNode = function(left, minus, right) {
-	return new nodes.OperatorNode(left, minus, right,
+	return new nodes.OperatorNode(left, minus, right,'minus',
 					function(table){
 						 	table['_'] = valueOf(table, this.left) - valueOf(table, this.right);
 						 	return table;
@@ -49,7 +49,7 @@ utils.createMinusNode = function(left, minus, right) {
 }
 
 utils.createPowNode = function(left, pow, right) {
-	return new nodes.OperatorNode(left, pow, right,
+	return new nodes.OperatorNode(left, pow, right,'pow',
 					function(table){
 						 	table['_'] = Math.pow(valueOf(table, this.left),valueOf(table, this.right));
 						 	return table;
