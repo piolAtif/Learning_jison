@@ -117,6 +117,16 @@ describe('parseTree', function() {
 			var tree = parser.parse('x=2;x=2^5;x;');
 			assert.equal(32,tree.evaluate());
 		});
+
+		it('should return 11 for given complex expression',function(){
+			var tree = parser.parse('x=5;x=6;x+5;');
+			assert.equal(11,tree.evaluate());
+		});
+
+		it('should give factorial of given number',function(){
+			var tree = parser.parse('5!;');
+			assert.equal(120,tree.evaluate());
+		});
 	});
 	
 	describe('to javascript code',function(){
@@ -126,15 +136,27 @@ describe('parseTree', function() {
 			assert.equal(expected, tree.toJS());
 		});
 
-		it('should give equivalent js code for a simple variable assign expression',function(){
+		it('should give equivalent js code for a simple variable',function(){
 			var tree = parser.parse('x=10;');
 			var expected = 'var x = 10;'+'\n';
 			assert.equal(expected, tree.toJS());
 		});
 
-		it('should give equivalent js code for a simple variable',function(){
+		it('should give equivalent js code for a simple variable assign expression',function(){
 			var tree = parser.parse('x=10; x;');
 			var expected = 'var x = 10;'+'\n'+'console.log(x);'+'\n';
+			assert.equal(expected, tree.toJS());
+		});
+
+		it('should give equivalent js code for a little complex expression',function(){
+			var tree = parser.parse('x=10; 5+x*2;');
+			var expected = 'var x = 10;'+'\n'+'console.log(5 + (x * 2));'+'\n';
+			assert.equal(expected, tree.toJS());
+		});
+
+		it('should give equivalent js code for a complex expression',function(){
+			var tree = parser.parse('x=10; 5+x*2;6*x;');
+			var expected = 'var x = 10;'+'\n'+'console.log(5 + (x * 2));'+'\n'+'console.log(6 * x);'+'\n';
 			assert.equal(expected, tree.toJS());
 		});
 	});
