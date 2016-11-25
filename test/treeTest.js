@@ -1,8 +1,10 @@
 var Parser = require('jison').Parser;
 var fs = require('fs');
 var assert = require('assert');
+var utils = require('../src/utils.js');
 var grammar = fs.readFileSync('./src/mathematicalExpressionEvaluator.jison', 'utf8');
-
+var chai = require('chai');
+var expect = chai.expect;
 var parser = new Parser(grammar);
 
 describe('parseTree', function() {
@@ -81,6 +83,12 @@ describe('parseTree', function() {
 			assert.equal(25, tree.evaluate());
 		});
 
+		it('should give 5 for given expression',function(){
+			var tree = parser.parse('a=5; b=a;');
+			assert.equal(5, tree.evaluate());
+		})
+
+
 		it('should give 10 for a complex expression',function(){
 			var tree = parser.parse('a=5; b=a; a+b;');
 			assert.equal(10, tree.evaluate());
@@ -98,7 +106,7 @@ describe('parseTree', function() {
 
 		it('should give error when evaluate variable before assign value to variable', function(){
 			var tree = parser.parse('x^2; x=10;');
-			assert.equal("x is not defined",tree.evaluate());
+			expect(tree.evaluate).to.throw(new utils.UndefinedVariableException('x'))
 		});
 	});
 	
