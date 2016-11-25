@@ -9,13 +9,13 @@ var identity = function(number){
 }
 
 utils.createVariableNode = function(variable){
-	return {sign:variable, evaluate:function(){return this.sign;}};
+	return {sign:variable, evaluate:function(table){return table;}};
 }
 
 utils.createAssignNode = function(left, assign, right){
 	return new nodes.OperatorNode(left, assign, right,
 						function(table){
-							table[this.left.evaluate()] = valueOf(table,this.right);
+							table[this.left.sign] = valueOf(table,this.right);
 							return table;
 						});
 }

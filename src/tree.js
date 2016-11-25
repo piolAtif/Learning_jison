@@ -14,9 +14,8 @@ Tree.prototype = {
 		return this.nodes[0].toWords();	
 	},
 	evaluate: function(){
-		for (var i = 0; i < this.nodes.length; i++) {
+		for (var i = 0; i < this.nodes.length; i++) 
 			this.varTable = this.nodes[i].evaluate(this.varTable);
-		}
 		return this.varTable['_']
 	}
 

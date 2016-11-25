@@ -107,6 +107,16 @@ describe('parseTree', function() {
 			var tree = parser.parse('x^2; x=10;');
 			expect(function(){tree.evaluate()}).to.throwException(/x is not defined/);
 		});
+
+		it('should return 35 for given expression',function(){
+			var tree = parser.parse('x=10;y=x+20;y+5;');
+			assert.equal(35, tree.evaluate());
+		})
+
+		it('should return 32 for given complex expression',function(){
+			var tree = parser.parse('x=2;x=2^5;x;');
+			assert.equal(32,tree.evaluate());
+		})
 	});
 	
 });
