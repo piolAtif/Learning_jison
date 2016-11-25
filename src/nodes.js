@@ -10,12 +10,12 @@ var operations = {
 
 var nodes = {};
 
-nodes.OperatorNode = function(left, sign, right, evaluator) {
+nodes.OperatorNode = function(left, sign, right, type, evaluator) {
 	this.sign = sign;
 	this.evaluator = evaluator;
 	this.left = left;
 	this.right = right;
-
+	this.type = type;
 }
 
 nodes.OperatorNode.prototype = {
@@ -35,8 +35,53 @@ nodes.OperatorNode.prototype = {
 	},
 	signature: function() {
 		return this.sign;
+	},
+	asString:function(){
+		return this.left.asString()+' '+this.signature()+' '+this.right.asString();
+	},
+	getType: function() {
+		return this.type;
 	}
 }
+
+
+nodes.NumberNode = function(number,type){
+	this.sign= number;
+	this.type = type;
+};
+
+nodes.NumberNode.prototype = {
+	evaluate: function(table){
+		table['_'] = this.sign;
+		return table;
+	},
+
+	asString:function(){return this.sign;},
+
+	getType:function(){
+		return this.type;
+	}
+}
+
+nodes.VariableNode = function(variable,type){
+	this.sign = variable;
+	this.type = type;
+}
+
+nodes.VariableNode.prototype = {
+	evaluate: function(table){
+		return table;
+	},
+
+	asString:function(){
+		return this.sign;
+	},
+	getType:function(){
+		return this.type;
+	}
+
+}
+
 
 module.exports = nodes;
 
