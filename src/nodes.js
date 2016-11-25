@@ -95,6 +95,13 @@ nodes.FactorialNode = function(value, sign, type, evaluator ){
 nodes.FactorialNode.prototype = {
 	evaluate: function(varTable){
 		return this.evaluator(varTable);
+	},
+
+	asString:function(){
+		return this.type.toString()+'('+this.value.asString()+');';
+	},
+	getType:function(){
+		return 'method';
 	}
 }
 
