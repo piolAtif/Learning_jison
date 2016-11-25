@@ -3,8 +3,7 @@ var fs = require('fs');
 var assert = require('assert');
 var utils = require('../src/utils.js');
 var grammar = fs.readFileSync('./src/mathematicalExpressionEvaluator.jison', 'utf8');
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('expect.js');
 var parser = new Parser(grammar);
 
 describe('parseTree', function() {
@@ -106,7 +105,7 @@ describe('parseTree', function() {
 
 		it('should give error when evaluate variable before assign value to variable', function(){
 			var tree = parser.parse('x^2; x=10;');
-			expect(tree.evaluate).to.throw(new utils.UndefinedVariableException('x'))
+			expect(function(){tree.evaluate()}).to.throwException(/x is not defined/);
 		});
 	});
 	

@@ -1,6 +1,7 @@
 var converter = require('number-to-words');
 var nodes = require('./nodes.js');
 var Tree = require('./tree.js');
+var errors = require('./exception.js');
 var utils = {};
 
 var identity = function(number){
@@ -55,11 +56,6 @@ utils.createPowNode = function(left, pow, right) {
 						 });
 }
 
-utils.UndefinedVariableException = function(value){
-	this.value = value;
-	this.message = this.value+' is not defined';
-}
-
 var valueOf = function(table, node){
 	var value = node.evaluate(table)['_'];
 	if(table.hasOwnProperty(node.sign) ) {
@@ -69,7 +65,7 @@ var valueOf = function(table, node){
 		return value;
 	}
 	else{
-		throw new utils.UndefinedVariableException(node.sign);
+		throw new errors.UndefinedVariableException(node.sign);
 	}
 
 }
