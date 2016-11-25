@@ -14,7 +14,7 @@ var typeOperation = {
 		return 'var '+value+';';
 	},
 	arithmetic: function(value){
-		return 'console.log('+value+');';
+		return 'console.log'+value+';';
 	}
 
 }
