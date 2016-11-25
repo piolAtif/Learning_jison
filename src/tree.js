@@ -38,11 +38,9 @@ Tree.prototype = {
 		return this.varTable['_']
 	},
 	toJS: function(){
-	var jsCode = '';		
-		for (var i = 0; i < this.nodes.length; i++) {
-			 jsCode += typeOperation[this.nodes[i].getType()](this.nodes[i].asString())+'\n';
-		}
-		return jsCode;
+		return this.nodes.map(function(ele) {
+			return typeOperation[ele.getType()](ele.asString());
+		}).join('\n');
 	}
 
 }

@@ -146,51 +146,51 @@ describe('parseTree', function() {
 	describe('to javascript code',function(){
 		it('should give equivalent js code for a simple number',function(){
 			var tree = parser.parse('10;');
-			var expected = 'console.log(10);\n';
+			var expected = 'console.log(10);';
 			assert.equal(expected, tree.toJS());
 		});
 
 		it('should give equivalent js code for a simple variable',function(){
 			var tree = parser.parse('x=10;');
-			var expected = 'var x = 10;\n';
+			var expected = 'var x = 10;';
 			assert.equal(expected, tree.toJS());
 		});
 
 		it('should give equivalent js code for a simple variable assign expression',function(){
 			var tree = parser.parse('x=10; x;');
-			var expected = 'var x = 10;\nconsole.log(x);\n';
+			var expected = 'var x = 10;\nconsole.log(x);';
 			assert.equal(expected, tree.toJS());
 		});
 
 		it('should give equivalent js code for a little complex expression',function(){
 			var tree = parser.parse('x=10; 5+x*2;');
-			var expected = 'var x = 10;\nconsole.log(5 + (x * 2));\n';
+			var expected = 'var x = 10;\nconsole.log(5 + (x * 2));';
 			assert.equal(expected, tree.toJS());
 		});
 
 		it('should give equivalent js code for a complex expression',function(){
 			var tree = parser.parse('x=10; 5+x*2;6*x;');
-			var expected = 'var x = 10;\nconsole.log(5 + (x * 2));\nconsole.log(6 * x);\n';
+			var expected = 'var x = 10;\nconsole.log(5 + (x * 2));\nconsole.log(6 * x);';
 			assert.equal(expected, tree.toJS());
 		});
 
 		it('should give equivalent js code for factorial of a given number',function(){
 			var tree = parser.parse('5!;');
-			var expected = 'console.log(function (number){\n\tif(number == 1)\n\t\treturn 1;\n\treturn factorialOf(number-1)*number;\n}(5););\n';
+			var expected = 'console.log(function (number){\n\tif(number == 1)\n\t\treturn 1;\n\treturn factorialOf(number-1)*number;\n}(5););';
 			assert.equal(expected,tree.toJS());
 		});
 
 		it('should give equivalent js code for a complex factorial of a given expression',function(){
 			var tree = parser.parse('x=5;x!;');
 			var expected = 'var x = 5;\nconsole.log(function (number){\n\tif(number == 1)\n\t\treturn 1;\n\t'
-				+'return factorialOf(number-1)*number;\n}(x););\n';
+				+'return factorialOf(number-1)*number;\n}(x););';
 			assert.equal(expected,tree.toJS());
 		});
 
 		it('should give equivalent js code for a more complex factorial of a given expression',function(){
 			var tree = parser.parse('x=5;y=4;x+y!;');
 			var expected = 'var x = 5;\nvar y = 4;\nconsole.log(x + function (number){\n\tif(number == 1)\n\t\t'
-				+'return 1;\n\treturn factorialOf(number-1)*number;\n}(y););\n';
+				+'return 1;\n\treturn factorialOf(number-1)*number;\n}(y););';
 			assert.equal(expected,tree.toJS());
 		});
 	});
