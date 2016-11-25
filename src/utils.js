@@ -8,6 +8,12 @@ var identity = function(number){
 	return number;
 }
 
+var factorialOf = function(number){
+	if(number == 1)
+		return 1;
+	return factorialOf(number-1)*number;
+}
+
 utils.createVariableNode = function(variable){
 	return new nodes.VariableNode(variable,'variable');
 }
@@ -54,6 +60,13 @@ utils.createPowNode = function(left, pow, right) {
 						 	table['_'] = Math.pow(valueOf(table, this.left),valueOf(table, this.right));
 						 	return table;
 						 });
+}
+
+utils.createFactorialNode = function(operand, factorial){
+	return new nodes.FactorialNode(operand, factorial, 'unary', function(table){
+		table['_'] = factorialOf(valueOf(table, this.value));
+		return table;
+	})
 }
 
 var valueOf = function(table, node){
