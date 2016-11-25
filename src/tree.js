@@ -13,6 +13,9 @@ var typeOperation = {
 	assign: function(value){
 		return 'var '+value+';';
 	},
+	arithmetic: function(value){
+		return 'console.log('+value+');';
+	}
 
 }
 

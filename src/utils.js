@@ -21,7 +21,7 @@ utils.createAssignNode = function(left, assign, right){
 }
 
 utils.createPlusNode = function(left, plus, right){
-	return new nodes.OperatorNode(left, plus, right,'plus',
+	return new nodes.OperatorNode(left, plus, right,'arithmetic',
 			 function(table){
 			 	table['_'] = valueOf(table,this.left) + valueOf(table,this.right);
 			 	return table;
@@ -29,7 +29,7 @@ utils.createPlusNode = function(left, plus, right){
 }
 
 utils.createMultiplyNode = function(left, multiply, right){
-	return new nodes.OperatorNode(left, multiply, right,'times',
+	return new nodes.OperatorNode(left, multiply, right,'arithmetic',
 						 function(table){
 						 	table['_'] = valueOf(table, this.left) * valueOf(table, this.right);
 						 	return table;
@@ -41,7 +41,7 @@ utils.createNumberNode = function(number){
 }
 
 utils.createMinusNode = function(left, minus, right) {
-	return new nodes.OperatorNode(left, minus, right,'minus',
+	return new nodes.OperatorNode(left, minus, right,'arithmetic',
 					function(table){
 						 	table['_'] = valueOf(table, this.left) - valueOf(table, this.right);
 						 	return table;
@@ -49,7 +49,7 @@ utils.createMinusNode = function(left, minus, right) {
 }
 
 utils.createPowNode = function(left, pow, right) {
-	return new nodes.OperatorNode(left, pow, right,'pow',
+	return new nodes.OperatorNode(left, pow, right,'arithmetic',
 					function(table){
 						 	table['_'] = Math.pow(valueOf(table, this.left),valueOf(table, this.right));
 						 	return table;
