@@ -63,7 +63,7 @@ utils.createPowNode = function(left, pow, right) {
 }
 
 utils.createFactorialNode = function(operand, factorial){
-	return new nodes.FactorialNode(operand, factorial, 'unary', function(table){
+	return new nodes.FactorialNode(operand, factorial, factorialOf, function(table){
 		table['_'] = factorialOf(valueOf(table, this.value));
 		return table;
 	})
