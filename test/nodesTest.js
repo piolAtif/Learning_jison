@@ -2,21 +2,21 @@ var assert = require('assert');
 var utils = require('../src/utils.js');
 
 describe('Create single tree node', function() {
+     var firstNumberNode = utils.createNumberNode(1);
+     var secondNumberNode = utils.createNumberNode(2)
+
     it('should return number when node is a number', function() {
-        var numberNode = utils.createNumberNode(1);
-        assert.equal(1, numberNode.evaluation());
+        assert.equal(1, firstNumberNode.evaluate({'_': undefined})['_']);
     })
 
     it('should return sum of two numbers when node is plus', function() {
-        var plusNode = utils.createPlusNode('+');
-        plusNode.setValues(1,2);
-        assert.equal(3, plusNode.evaluation());
+        var plusNode = utils.createPlusNode(firstNumberNode,'+',secondNumberNode);
+        assert.equal(3, plusNode.evaluate({'_': undefined})['_']);
     })
 
     it('should return multiplication of two numbers when node is a multiply', function() {
-        var multiplyNode = utils.createMultiplyNode('*');
-         multiplyNode.setValues(3,2);
-        assert.equal(6, multiplyNode.evaluation());
+        var multiplyNode = utils.createMultiplyNode(firstNumberNode,'*',secondNumberNode);
+        assert.equal(2, multiplyNode.evaluate({'_': undefined})['_']);
     })
 })
 
@@ -24,19 +24,18 @@ describe('Create single tree node', function() {
 describe('Evaluate expressions', function() {
     var firstNumberNode = utils.createNumberNode(1);
     var secondNumberNode = utils.createNumberNode(2);
-    var plusNode = utils.createPlusNode('+');
-    var multiplyNode = utils.createPlusNode('*');
+    var plusNode = utils.createPlusNode(firstNumberNode,'+',secondNumberNode);
+    var multiplyNode = utils.createPlusNode(firstNumberNode,'*',secondNumberNode);
 
     describe('Evaluate expressions with Parenthesis', function() {
         describe('should pass string when given expression is a single array', function() {
             it('should give expression for sum of two numbers', function() {
-                var tree = [firstNumberNode, plusNode, secondNumberNode];
                 var expectedResult = '( 1 + 2 )';
-                assert.equal(utils.parse(tree).id, expectedResult);
+                assert.equal(plusNode.withParenthesis(), expectedResult);
             });
 
             it('should give expression for multiplication of two numbers', function() {
-                var tree = [firstNumberNode, multiplyNode, secondNumberNode];
+                var tree = [multiplyNode];
                 var expectedResult = '( 1 * 2 )';
                 assert.equal(utils.parse(tree).id, expectedResult);
             });
